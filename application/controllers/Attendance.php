@@ -28,14 +28,21 @@ class Attendance extends Admin_Controller
             redirect(base_url(), 'refresh');
         }
     }
-
+    public function bulk_attendance()
+    {
+        if(isset($_POST))
+        {
+          $result=$this->attendance_model->bulk_attendance($_POST);
+          echo json_encode($result);
+        }
+    }
     // student submitted attendance all data are prepared and stored in the database here
     public function student_entry()
     {
         if (!get_permission('student_attendance', 'is_add')) {
             access_denied();
         }
-
+        // echo "<pre>";print_r($_POST);exit;
         $branchID = $this->application_model->get_branch_id();
         if (isset($_POST['search'])) {
             if (is_superadmin_loggedin()) {

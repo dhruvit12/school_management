@@ -10,10 +10,31 @@ class Attendance_model extends MY_Model
     {
         parent::__construct();
     }
-
+    public function bulk_attendance($data){
+        if(!empty($data['roll_no'])){
+            $roll_no=explode(",",$data['roll_no']);
+            foreach($roll_no as $d){
+            $this->db->where('roll_no',$d);
+            $result=$this->db->get('student')->result();
+            if(!empty($result)){
+                foreach($result as $student)
+                {
+                    $array_result=array('status'=>$data['status']); 
+                    $this->db->where('student_id',$student->id);
+                    $final_result=$this->db->update('student_attendance',$array_result);
+                } 
+              
+               }
+              
+              }
+             }  
+             return $final_result;
+   
+   
+    }
     public function getStudentAttendence($classID, $sectionID, $date, $branchID)
     {
-        $sql = "SELECT enroll.student_id,enroll.roll,student.first_name,student.last_name,student.register_no,student_attendance.id as `att_id`,
+        $sql = "SELECT enroll.student_id,enroll.roll,student.roll_no,student.first_name,student.last_name,student.register_no,student_attendance.id as `att_id`,
         student_attendance.status as `att_status`,student_attendance.remark as `att_remark` FROM enroll LEFT JOIN student ON
         student.id = enroll.student_id LEFT JOIN student_attendance ON student_attendance.student_id = student.id AND
         student_attendance.date = " . $this->db->escape($date) . " WHERE enroll.class_id = " . $this->db->escape($classID) .

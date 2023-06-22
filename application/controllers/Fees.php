@@ -482,6 +482,7 @@ class Fees extends Admin_Controller
             access_denied();
         }
         $this->data['invoice'] = $this->fees_model->getInvoiceStatus($id);
+        // echo "<pre>";print_r($this->data['invoice']);exit;
         $this->data['basic'] = $this->fees_model->getInvoiceBasic($id);
         $this->data['title'] = translate('invoice_history');
         $this->data['main_menu'] = 'fees';

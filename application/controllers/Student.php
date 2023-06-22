@@ -44,6 +44,8 @@ class Student extends Admin_Controller
         $this->form_validation->set_rules('first_name', translate('first_name'), 'trim|required');
         $this->form_validation->set_rules('last_name', translate('last_name'), 'trim|required');
         $this->form_validation->set_rules('mobileno', translate('mobile_no'), 'trim|required');
+        $this->form_validation->set_rules('sur_name', translate('sur_name'), 'trim|required');
+
         $this->form_validation->set_rules('email', translate('email'), 'trim|required|valid_email|callback_unique_username');
         $this->form_validation->set_rules('roll', translate('roll_number'), 'trim|required|numeric|callback_unique_roll');
         $this->form_validation->set_rules('register_no', translate('register_no'), 'trim|required|callback_unique_registerid');
@@ -88,6 +90,7 @@ class Student extends Admin_Controller
             }
             if ($this->form_validation->run() == true) {
                 $post = $this->input->post();
+                // echo "<pre>";print_r($post);exit;
                 //save all student information in the database file
                 $studentID = $this->student_model->save($post);
                 //save student enroll information in the database file
@@ -127,7 +130,14 @@ class Student extends Admin_Controller
         $this->data['branch_id'] = $branchID;
         $this->data['sub_page'] = 'student/add';
         $this->data['main_menu'] = 'admission';
+        $this->data['roll_no'] = $this->student_model->rollNumber();
         $this->data['register_id'] = $this->student_model->regSerNumber();
+        $this->data['religion'] = $this->student_model->getreligion();
+        $this->data['mother_tongue'] = $this->student_model->getmother_tongue();
+        $this->data['states'] = $this->student_model->getstates();
+        // echo "<pre>";print_r($this->data['religion']);exit;
+
+
         $this->data['title'] = translate('create_admission');
         $this->data['headerelements'] = array(
             'css' => array(
@@ -259,6 +269,31 @@ class Student extends Admin_Controller
     }
 
     // add new student category
+    public function add_category()
+    {
+        // echo "<pre>";print_r($_POST);exit;
+        if (isset($_POST['category_name'])) {
+            if (!get_permission('student_category', 'is_add')) {
+                access_denied();
+            }
+            if (is_superadmin_loggedin()) {
+                $this->form_validation->set_rules('branch_id', translate('branch'), 'required');
+            }
+            $this->form_validation->set_rules('category_name', translate('category_name'), 'trim|required|callback_unique_category');
+            if ($this->form_validation->run() !== false) {
+                $arrayData = array(
+                    'name' => $this->input->post('category_name'),
+                    'branch_id' => $this->application_model->get_branch_id(),
+                );
+                $this->db->insert('student_category', $arrayData);
+                set_alert('success', translate('information_has_been_saved_successfully'));
+                // redirect(base_url('student/add'));
+                echo '1';
+            }
+        }
+        // redirect(base_url('student/add'));
+        echo '0';
+    }
     public function category()
     {
         if (isset($_POST['category'])) {
@@ -771,7 +806,8 @@ class Student extends Admin_Controller
         if ($this->input->post()) {
             $this->data['class_id'] = $this->input->post('class_id');
             $this->data['section_id'] = $this->input->post('section_id');
-            $this->data['students'] = $this->application_model->getStudentListByClassSection($this->data['class_id'], $this->data['section_id'], $branchID, false, true);
+           $this->data['students'] = $this->application_model->getStudentListByClassSection($this->data['class_id'], $this->data['section_id'], $branchID, false, true);
+           
         }
         $this->data['branch_id'] = $branchID;
         $this->data['title'] = translate('student_promotion');
@@ -903,5 +939,11 @@ class Student extends Admin_Controller
             $status = 'error';
         }
         echo json_encode(array('status' => $status, 'message' => $message));
+    }
+    function get_city()
+    {
+        $city = $this->student_model->get_city($this->input->post('id'));
+        // echo "<pre>";print_r($city);exit;
+        echo json_encode($city);
     }
 }

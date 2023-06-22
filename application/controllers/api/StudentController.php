@@ -8,10 +8,11 @@ class StudentController extends RestController {
 	function __construct() {
 		parent::__construct();
     }
-    public function getstudent()
+    public function student_get()
     {
+        echo "hi";exit;
         $students = new Student_model_api;
-        $students = $students->student_get();
+        $students = $students->get_student();
         $this->response($students, 200);
     }
 }

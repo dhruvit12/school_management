@@ -38,7 +38,6 @@ class Subject extends Admin_Controller
         if (!get_permission('subject', 'is_edit')) {
             access_denied();
         }
-
         $this->data['subject'] = $this->app_lib->getTable('subject', array('t.id' => $id), true);
         $this->data['title'] = translate('subject');
         $this->data['sub_page'] = 'subject/edit';
@@ -64,6 +63,7 @@ class Subject extends Admin_Controller
                     'subject_author' => $this->input->post('subject_author'),
                     'branch_id' => $this->application_model->get_branch_id(),
                 );
+                // echo "<pre>";print_r($this->input->post());exit;
                 $subjectID = $this->input->post('subject_id');
                 if (empty($subjectID)) {
                     if (get_permission('subject', 'is_add')) {
@@ -72,7 +72,7 @@ class Subject extends Admin_Controller
                     set_alert('success', translate('information_has_been_saved_successfully'));
                 } else {
                     if (get_permission('subject', 'is_edit')) {
-                        if (!is_superadmin_loggedin()) {
+                        if (!is_superadmin_loggedin()) {    
                             $this->db->where('branch_id', get_loggedin_branch_id());
                         }
                         $this->db->where('id', $subjectID);

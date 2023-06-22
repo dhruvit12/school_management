@@ -8,14 +8,16 @@
 	<div class="nano">
         <div class="nano-content">
             <nav id="menu" class="nav-main" role="navigation">
-                <ul class="nav nav-main">
+            <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." style="width:200px;margin-left:15px;"  title="Type in a category" class="form-control">
+                <ul class="nav nav-main" id="myMenu">
                     <!-- dashboard -->
+
                     <?php if (is_superadmin_loggedin()) { ?>
                     <li class="nav-parent <?php if ($main_menu == 'dashboard') echo 'nav-active nav-expanded';?>">
                         <a>
                             <i class="icons icon-grid"></i><span><?=translate('dashboard')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                         <?php $school_id = $this->input->get('school_id'); ?>
                             <li class="<?php if ($main_menu == 'dashboard' && empty($school_id)) echo 'nav-active';?>">
                                 <a href="<?=base_url('dashboard')?>">
@@ -60,7 +62,7 @@
                         <a>
                             <i class="far fa-edit"></i><span><?=translate('admission')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                         <?php if(get_permission('student', 'is_add')){ ?>
                             <li class="<?php if ($sub_page == 'student/add') echo 'nav-active';?>">
                                 <a href="<?=base_url('student/add')?>">
@@ -94,7 +96,7 @@
                         <a>
                              <i class="icon-graduation icons"></i><span><?=translate('student_details')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                         <?php if(get_permission('student', 'is_view')){ ?>
                             <li class="<?php if ($sub_page == 'student/view' || $sub_page == 'student/profile') echo 'nav-active';?>">
                                 <a href="<?=base_url('student/view')?>">
@@ -127,7 +129,7 @@
                         <a>
                             <i class="icons icon-user-follow"></i><span><?=translate('parents')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu" >
                         <?php if(get_permission('parent', 'is_view')){ ?>
                             <li class="<?php if ($sub_page == 'parents/view' || $sub_page == 'parents/profile') echo 'nav-active';?>">
                                 <a href="<?=base_url('parents/view')?>">
@@ -161,7 +163,7 @@
                     <!-- Employees -->
                     <li class="nav-parent <?php if ($main_menu == 'employee') echo 'nav-expanded nav-active'; ?>">
                         <a><i class="fas fa-users"></i><span><?php echo translate('employee'); ?></span></a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                         <?php if(get_permission('employee', 'is_view')){ ?>
                             <li class="<?php if ($sub_page == 'employee/view' ||  $sub_page == 'employee/profile' ) echo 'nav-active'; ?>">
                                 <a href="<?php echo base_url('employee/view'); ?>">
@@ -213,7 +215,7 @@
                         <a>
                             <i class="icons icon-loop"></i><span><?=translate('hrm')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php
                             if(get_permission('salary_template', 'is_view') ||
                             get_permission('salary_assign', 'is_view') ||
@@ -225,7 +227,7 @@
                                     <i class="far fa-address-card" aria-hidden="true"></i>
                                     <span><?=translate('payroll')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('salary_template', 'is_view')){ ?>
                                     <li class="<?php if ($sub_page == 'payroll/salary_templete' || $sub_page == 'payroll/salary_templete_edit') echo 'nav-active';?>">
                                         <a href="<?=base_url('payroll/salary_template')?>">
@@ -259,7 +261,7 @@
                                     <i class="fas fa-funnel-dollar" aria-hidden="true"></i>
                                     <span><?=translate('advance_salary')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('advance_salary_request', 'is_view')){ ?>
                                     <li class="<?php if ($sub_page == 'advance_salary/request') echo 'nav-active';?>">
                                         <a href="<?=base_url('advance_salary/request')?>">
@@ -288,7 +290,7 @@
                                     <i class="fas fa-umbrella-beach" aria-hidden="true"></i>
                                     <span><?=translate('leave')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                 <?php if(get_permission('leave_category', 'is_view')){ ?>
                                     <li class="<?php if ($sub_page == 'leave/category') echo 'nav-active';?>">
                                         <a href="<?=base_url('leave/category')?>">
@@ -354,7 +356,7 @@
                                     <i class="fas fa-tasks" aria-hidden="true"></i>
                                     <span><?=translate('class') . " & ". translate('section')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('classes', 'is_view') ||  get_permission('section', 'is_view')) { ?>
                                     <li class="<?php if ($sub_page == 'classes/index' ||
                                                             $sub_page == 'classes/edit' ||
@@ -385,7 +387,7 @@
                                 <a>
                                     <i class="fas fa-book-reader"></i><?=translate('subject')?>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('subject', 'is_view')) { ?>
                                     <li class="<?php if ($sub_page == 'subject/index' || $sub_page == 'subject/edit') echo 'nav-active';?>">
                                         <a href="<?=base_url('subject/index')?>">
@@ -442,7 +444,7 @@
                         <a>
                             <i class="icons icon-cloud-upload"></i><span><?=translate('attachments_book')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if(get_permission('attachments', 'is_view')) { ?>
                             <li class="<?php if ($sub_page == 'attachments/index') echo 'nav-active';?>">
                                 <a href="<?=base_url('attachments')?>">
@@ -468,7 +470,7 @@
                         <a>
                             <i class="icons icon-note"></i><span><?=translate('homework')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if(get_permission('homework', 'is_view')) { ?>
                             <li class="<?php if ($sub_page == 'homework/index' || $sub_page == 'homework/add' || $sub_page == 'homework/evaluate_list' || $sub_page == 'homework/edit') echo 'nav-active';?>">
                                 <a href="<?=base_url('homework')?>">
@@ -499,7 +501,7 @@
                         <a>
                             <i class="icons icon-book-open" aria-hidden="true"></i><span><?=translate('exam_master')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php
                             if(get_permission('exam', 'is_view') ||
                             get_permission('exam_term', 'is_view') ||
@@ -511,7 +513,7 @@
                                 <a>
                                     <i class="fas fa-flask"></i> <span><?=translate('exam')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if (get_permission('exam_term', 'is_view')) {  ?>
                                     <li class="<?php if ($sub_page == 'exam/term') echo 'nav-active';?>">
                                         <a href="<?=base_url('exam/term')?>">
@@ -548,7 +550,7 @@
                                 <a>
                                     <i class="fas fa-dna"></i> <span><?=translate('exam') . " " . translate('schedule')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('exam_timetable', 'is_view')) { ?>
                                     <li class="<?php if ($sub_page == 'timetable/viewexam') echo 'nav-active';?>">
                                         <a href="<?=base_url('timetable/viewexam')?>">
@@ -574,7 +576,7 @@
                                 <a>
                                     <i class="fas fa-marker"></i><span><?=translate('marks')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('exam_mark', 'is_view')) { ?>
                                     <li class="<?php if ($sub_page == 'exam/marks_register') echo 'nav-active';?>">
                                         <a href="<?=base_url('exam/mark_entry')?>">
@@ -610,7 +612,7 @@
                         <a>
                             <i class="icons icon-feed" aria-hidden="true"></i><span><?=translate('supervision')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php
                             if(get_permission('hostel', 'is_view') ||
                             get_permission('hostel_category', 'is_view') ||
@@ -622,7 +624,7 @@
                                 <a>
                                     <i class="fas fa-store-alt"></i><span><?=translate('hostel')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php  if(get_permission('hostel', 'is_view')) { ?>
                                     <li class="<?php if ($sub_page == 'hostels/index' || $sub_page == 'hostels/edit') echo 'nav-active';?>">
                                         <a href="<?=base_url('hostels')?>">
@@ -663,7 +665,7 @@
                                 <a>
                                     <i class="fas fa-bus"></i><span><?=translate('transport')?></span>
                                 </a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('transport_route', 'is_view')) { ?>
                                     <li class="<?php if ($sub_page == 'transport/route' || $sub_page == 'transport/route_edit') echo 'nav-active';?>">
                                         <a href="<?=base_url('transport/route')?>">
@@ -711,7 +713,7 @@
                         <a>
                             <i class="icons icon-chart"></i><span><?=translate('attendance')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if(get_permission('student_attendance', 'is_add')) { ?>
                             <li class="<?php if ($sub_page == 'attendance/student_entries') echo 'nav-active';?>">
                                 <a href="<?=base_url('attendance/student_entry')?>">
@@ -745,7 +747,7 @@
                         <a>
                             <i class="icons icon-notebook"></i><span><?=translate('library')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if (get_permission('book', 'is_view')) {  ?>
                             <li class="<?php if ($sub_page == 'library/book') echo 'nav-active';?>">
                                 <a href="<?=base_url('library/book')?>">
@@ -783,7 +785,7 @@
                         <a>
                             <i class="icons icon-speech"></i><span><?=translate('events')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if (get_permission('event_type', 'is_view')) { ?>
                             <li class="<?php if ($sub_page == 'event/types') echo 'nav-active';?>">
                                 <a href="<?=base_url('event/types')?>">
@@ -810,7 +812,7 @@
                         <a>
                             <i class="icons icon-bell"></i><span>Bulk Sms And Email</span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if (get_permission('sendsmsmail', 'is_add')) {  ?>
                             <li class="<?php if ($sub_page == 'sendsmsmail/sms' || $sub_page == 'sendsmsmail/email') echo 'nav-active';?>">
                                 <a href="<?=base_url('sendsmsmail/sms')?>">
@@ -851,7 +853,7 @@
                         <a>
                             <i class="icons icon-calculator"></i><span><?=translate('student_accounting')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if(get_permission('fees_type', 'is_view')) { ?>
                             <li class="<?php if ($sub_page == 'fees/type') echo 'nav-active';?>">
                                 <a href="<?=base_url('fees/type')?>"><span><i class="fas fa-caret-right"></i><?=translate('fees_type')?></span></a>
@@ -896,7 +898,7 @@
                         <a>
                             <i class="icon-credit-card icons"></i><span><?=translate('office_accounting')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if(get_permission('account', 'is_view')){ ?>
                                 <li class="<?php if ($sub_page == 'accounting/index' || $sub_page == 'accounting/edit') echo 'nav-active'; ?>">
                                     <a href="<?php echo base_url('accounting'); ?>">
@@ -964,7 +966,7 @@
                         <a>
                             <i class="icons icon-pie-chart icons"></i><span><?=translate('reports')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                         <?php  if(get_permission('fees_reports', 'is_view')){ ?>
                             <li class="nav-parent <?php if ($main_menu == 'fees_repots') echo 'nav-expanded nav-active'; ?>">
                                 <a><i class="fas fa-print"></i><span><?php echo translate('fees_reports'); ?></span></a>
@@ -989,7 +991,7 @@
                         <?php  if(get_permission('accounting_reports', 'is_view')){ ?>
                             <li class="nav-parent <?php if ($main_menu == 'accounting_repots') echo 'nav-expanded nav-active'; ?>">
                                 <a><i class="fas fa-print"></i><span><?php echo translate('financial_reports'); ?></span></a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <li class="<?php if ($sub_page == 'accounting/account_statement') echo 'nav-active'; ?>">
                                         <a href="<?php echo base_url('accounting/account_statement'); ?>"><?php echo translate('account') . " " . translate('statement'); ?></a>
                                     </li>
@@ -1015,7 +1017,7 @@
                         <?php if($attendance_report == true) { ?>
                             <li class="nav-parent <?php if ($main_menu == 'attendance_report') echo 'nav-expanded nav-active'; ?>">
                                 <a><i class="fas fa-print"></i><span><?php echo translate('attendance_reports'); ?></span></a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('student_attendance_report', 'is_view')) { ?>
                                     <li class="<?php if ($sub_page == 'attendance/student_report') echo 'nav-active';?>">
                                         <a href="<?=base_url('attendance/studentwise_report')?>">
@@ -1042,7 +1044,7 @@
                         <?php  if(get_permission('salary_summary_report', 'is_view') || get_permission('leave_reports', 'is_view')){ ?>
                             <li class="nav-parent <?php if ($main_menu == 'payroll_reports' || $main_menu == 'leave_reports') echo 'nav-expanded nav-active'; ?>">
                                 <a><i class="fas fa-print"></i><span><?php echo translate('hrm'); ?></span></a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('salary_summary_report', 'is_view')){ ?>
                                     <li class="<?php if ($sub_page == 'payroll/salary_statement') echo 'nav-active';?>">
                                         <a href="<?=base_url('payroll/salary_statement')?>">
@@ -1062,7 +1064,7 @@
                         <?php if(get_permission('report_card', 'is_view') || get_permission('tabulation_sheet', 'is_view')) { ?>
                             <li class="nav-parent <?php if ($main_menu == 'exam_reports') echo 'nav-expanded nav-active'; ?>">
                                 <a><i class="fas fa-print"></i><span><?php echo translate('examination'); ?></span></a>
-                                <ul class="nav nav-children">
+                                <ul class="nav nav-children" id="myMenu">
                                     <?php if(get_permission('report_card', 'is_view')) { ?>
                                     <li class="<?php if ($sub_page == 'exam/marksheet') echo 'nav-active';?>">
                                         <a href="<?=base_url('exam/marksheet')?>">
@@ -1105,7 +1107,7 @@
                         <a>
                             <i class="icons icon-briefcase"></i><span><?=translate('settings')?></span>
                         </a>
-                        <ul class="nav nav-children">
+                        <ul class="nav nav-children" id="myMenu">
                             <?php if(get_permission('global_settings', 'is_view')){ ?>
                             <li class="<?php if($sub_page == 'settings/universal') echo 'nav-active';?>">
                                 <a href="<?=base_url('settings/universal')?>">
@@ -1174,3 +1176,20 @@
 	</div>
 </aside>
 <!-- end sidebar -->
+<script>
+function myFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("mySearch");
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("myMenu");
+  li = ul.getElementsByTagName("li");
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+</script>

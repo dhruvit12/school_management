@@ -45,7 +45,7 @@
 				<div class="form-group <?php if (form_error('date')) echo 'has-error'; ?>">
 					<label class="control-label"><?=translate('date')?> <span class="required">*</span></label>
 					<div class="input-group">
-						<input type="text" class="form-control" data-plugin-datepicker name="date" value="<?=set_value('date', date("Y-m-d"))?>"/>
+						<input type="text" class="form-control" data-plugin-datepicker name="date" value="<?=set_value('date', date("Y-m-d"))?>" id="date"/>
 						<span class="input-group-addon"><i class="icon-event icons"></i></span>
 					</div>
 					<span class="error"><?=form_error('date')?></span>
@@ -93,6 +93,28 @@
 				</div>
 			</div>
 			<div class="row">
+				
+					<div class="col-lg-2">
+					<label style="  font-weight: bold;">Enter Roll Number..</label>
+						</div>
+						<div class="col-lg-4">
+					       <textarea class="form-control" name="roll_no" id="roll_no" placeholder="Enter Only Roll_number"></textarea>
+						</div>
+						<div class="col-lg-2">
+					       <select name="status" id="status" class="form-control">
+							     <option>Select Option</option>
+							     <option value="P">Present</option>
+							     <option value="A">Absent</option>
+							     <option value="H">Holiday</option>
+							     <option value="L">Late</option>
+
+						   </select>
+						</div>
+						<div class="col-lg-4">
+					  	  <a type="submit" class="btn btn-success" onclick="bulk_attendace()">submit</a>
+					    </div>
+			</div>
+			<div class="row">
 				<div class="col-md-12">
 					<div class="table-responsive mb-sm mt-xs">
 						<table class="table table-bordered table-hover table-condensed mb-none">
@@ -117,7 +139,7 @@
 									<input type="hidden" name="attendance[<?=$key?>][student_id]" value="<?=$row['student_id']?>" >
 									<td><?php echo $count++; ?></td>
 									<td><?php echo $row['first_name'] . ' ' . $row['last_name']; ?></td>
-									<td><?php echo $row['roll']; ?></td>
+									<td><?php echo $row['roll_no']; ?></td>
 									<td><?php echo $row['register_no']; ?></td>
 									<td>
 										<div class="radio-custom radio-success radio-inline mt-xs">
@@ -167,3 +189,19 @@
 		<?php echo form_close();?>
 	</section>
 <?php endif; ?>
+<script>
+	function bulk_attendace()
+	{
+		var roll_no=$("#roll_no").val();
+		var status=$("#status").val();
+		$.ajax({
+                    url:'<?=base_url()?>attendance/bulk_attendance',
+                    method: 'post',
+                    data: {roll_no : roll_no, status : status},
+                    dataType: 'json',
+                    success: function(response){
+						location.href="<?=base_url()?>attendance/student_entry";
+                    }
+               });
+	}
+</script>

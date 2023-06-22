@@ -1,7 +1,7 @@
 <header class="header">
 	<div class="logo-env">
 		<a href="<?php echo base_url('dashboard');?>" class="logo">
-			<img src="<?php echo base_url('uploads/app_image/logo-small.png');?>" height="40">
+			<img src="<?php echo base_url('uploads/app_image/logo-small.png');?>" height="35">
 		</a>
 
 		<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
@@ -88,16 +88,16 @@
 						<div class="scrollable visible-slider dh-tf" data-plugin-scrollable>
 							<div class="scrollable-content">
 								<ul>
-<?php
-$get_session = $this->db->get('schoolyear')->result();
-foreach ($get_session as $session) : 
-?>
-	<li>
-		<a href="<?php echo base_url('sessions/set_academic/' . $session->id);?>">
-			<?php echo $session->school_year;?> <?php echo get_session_id() == $session->id ? '<i class="fas fa-check"></i>' : ''; ?>
-		</a>
-	</li>
-<?php endforeach;?>
+									<?php
+									$get_session = $this->db->get('schoolyear')->result();
+									foreach ($get_session as $session) : 
+									?>
+										<li>
+											<a href="<?php echo base_url('sessions/set_academic/' . $session->id);?>">
+												<?php echo $session->school_year;?> <?php echo get_session_id() == $session->id ? '<i class="fas fa-check"></i>' : ''; ?>
+											</a>
+										</li>
+									<?php endforeach;?>
 								</ul>
 							</div>
 						</div>

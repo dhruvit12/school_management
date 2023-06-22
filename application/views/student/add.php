@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<section class="panel">
-			<?php echo form_open_multipart($this->uri->uri_string()); ?>
+			<?php  echo form_open_multipart($this->uri->uri_string()); ?>
 			<header class="panel-heading">
 				<h4 class="panel-title"><i class="fas fa-graduation-cap"></i> <?=translate('student_admission')?></h4>
 			</header>
@@ -34,7 +34,7 @@
 					<div class="col-md-3 mb-sm">
 						<div class="form-group">
 							<label class="control-label"><?=translate('register_no')?> <span class="required">*</span></label>
-							<input type="text" class="form-control" name="register_no" value="<?=set_value('register_no', $register_id)?>" />
+							<input type="text" class="form-control" name="register_no"  value="<?=set_value('register_no', $register_id)?>" />
 							<span class="error"><?=form_error('register_no')?></span>
 						</div>
 					</div>
@@ -42,7 +42,7 @@
 					<div class="col-md-3 mb-sm">
 						<div class="form-group">
 							<label class="control-label"><?=translate('roll')?> <span class="required">*</span></label>
-							<input type="text" class="form-control" name="roll" value="<?=set_value('roll')?>" />
+							<input type="text" class="form-control" name="roll" value="<?=set_value('roll_no',$roll_no)?>"  />
 							<span class="error"><?=form_error('roll')?></span>
 						</div>
 					</div>
@@ -105,6 +105,13 @@
 							?>
 							<span class="error"><?=form_error('category_id')?></span>
 						</div>
+							<div class="col-md-9 ">
+					        <label>Enter Category</label>
+							<input type="text" name="category_name" id="category_name" class="form-control" placeholder="Enter category.." style="width:200px">
+						</div>
+						<div class="col-md-2 ">
+							 <a class="btn btn-success" style="margin-top:25px;" onclick="insert_category()">Submit</a>
+					    </div>
 					</div>
 				</div>
 				
@@ -136,6 +143,19 @@
 					</div>
 					<div class="col-md-4 mb-sm">
 						<div class="form-group">
+							<label class="control-label"> <?=translate('sur_name')?> <span class="required">*</span></label>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fas fa-user-graduate"></i></span>
+								<input type="text" class="form-control" name="sur_name" value="<?=set_value('sur_name')?>" />
+							</div>
+						</div>
+						<span class="error"><?=form_error('sur_name')?></span>
+					</div>
+				</div>
+
+				<div class="row">
+				<div class="col-md-4 mb-sm">
+						<div class="form-group">
 							<label class="control-label"> <?=translate('gender')?> </label>
 							<?php
 								$arrayGender = array(
@@ -147,10 +167,8 @@
 							?>
 						</div>
 					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-6 mb-sm">
+				
+				<div class="col-md-4 mb-sm">
 						<div class="form-group">
 							<label class="control-label"><?=translate('blood_group')?></label>
 							<?php
@@ -160,7 +178,7 @@
 							?>
 						</div>
 					</div>
-					<div class="col-md-6 mb-sm">
+					<div class="col-md-4 mb-sm">
 						<div class="form-group">
 							<label class="control-label"><?=translate('birthday')?></label>
 							<div class="input-group">
@@ -176,13 +194,23 @@
 					<div class="col-md-4 mb-sm">
 						<div class="form-group">
 							<label class="control-label"><?=translate('mother_tongue')?></label>
-							<input type="text" class="form-control" name="mother_tongue" value="<?=set_value('mother_tongue')?>" />
+							<select name="mother_tongue" class="form-control">
+								<option value="">Select Option</option>
+						 	  <?php foreach($mother_tongue as $data){?>
+							     <option value="<?php echo $data->name; ?>"><?php echo $data->name; ?></option>	
+							  <?php } ?>
+						    </select> 
 						</div>
 					</div>
 					<div class="col-md-4 mb-sm">
 						<div class="form-group">
 							<label class="control-label"><?=translate('religion')?></label>
-							<input type="text" class="form-control" name="religion" value="<?=set_value('religion')?>" />
+		                    <select name="religion" class="form-control">
+								<option value="">Select Option</option>
+						 	  <?php foreach($religion as $data){?>
+							     <option value="<?php echo $data->value; ?>"><?php echo $data->value; ?></option>	
+							  <?php } ?>
+						    </select> 
 						</div>
 					</div>
 					<div class="col-md-4 mb-sm">
@@ -206,16 +234,24 @@
 					</div>
 					<div class="col-md-4 mb-sm">
 						<div class="form-group">
-							<label class="control-label"><?=translate('city')?></label>
-							<input type="text" class="form-control" name="city" value="<?=set_value('city')?>" />
+							<label class="control-label"><?=translate('state')?></label>
+							<select name="state" class="form-control" onchange="get_city()" id="state_id">
+								<option value="">Select Option</option>
+						 	  <?php foreach($states as $data){?>
+							     <option value="<?php echo $data->id; ?>"><?php echo $data->name; ?></option>	
+							  <?php } ?>
+						    </select> 
 						</div>
 					</div>
 					<div class="col-md-4 mb-sm">
 						<div class="form-group">
-							<label class="control-label"><?=translate('state')?></label>
-							<input type="text" class="form-control" name="state" value="<?=set_value('state')?>" />
+							<label class="control-label"><?=translate('city')?></label>
+							<select name="city" id="city" class="form-control">
+								<option value="">Select Option</option>
+							</select>
 						</div>
 					</div>
+					
 				</div>
 
 				<div class="row">
@@ -370,14 +406,21 @@
 					<div class="row">
 						<div class="col-md-4 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('city')?></label>
-								<input class="form-control" name="grd_city" value="<?=set_value('grd_city')?>" type="text">
+								<label class="control-label"><?=translate('state')?></label>
+								<select name="grd_state" class="form-control" onchange="get_city_second()" id="state_id_second">
+								<option value="">Select Option</option>
+						 	  <?php foreach($states as $data){?>
+							     <option value="<?php echo $data->id; ?>"><?php echo $data->name; ?></option>	
+							  <?php } ?>
+						    </select> 
 							</div>
 						</div>
 						<div class="col-md-4 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('state')?></label>
-								<input class="form-control" name="grd_state" value="<?=set_value('grd_state')?>" type="text">
+								<label class="control-label"><?=translate('city')?></label>
+								<select name="grd_city" id="grd_city" class="form-control">
+								<option value="">Select Option</option>
+							</select>
 							</div>
 						</div>
 						<div class="col-md-4 mb-sm">
@@ -530,3 +573,61 @@
 		</section>
 	</div>
 </div>
+<script>
+	function insert_category()
+	{
+		var cat_name=document.getElementById("category_name").value;
+        $.ajax({
+                    url:'<?=base_url()?>student/add_category',
+                    method: 'post',
+                    data: {category_name: cat_name},
+                    dataType: 'json',
+                    success: function(response){
+						location.href="<?=base_url()?>student/add";
+                    }
+               });
+	}
+   function get_city()
+   {
+	var id=$("#state_id").val();
+	var selOpts = "";
+	$('#city').find('option').not(':first').remove();
+         $.ajax({
+                    url:'<?=base_url()?>student/get_city',
+                    method: 'post',
+                    data: {id: id},
+                    dataType: 'json',
+					
+                    success: function(response){
+						$.each(response, function(index, value) {
+							 selOpts += "<option value='"+value.city+"'>"+value.city+"</option>";
+						});
+						$('#city').append(selOpts);
+
+		                
+                   }
+               });
+   }
+   function get_city_second()
+   {
+	var id=$("#state_id_second").val();
+	var selOpts = "";
+	$('#grd_city').find('option').not(':first').remove();
+         $.ajax({
+                    url:'<?=base_url()?>student/get_city',
+                    method: 'post',
+                    data: {id: id},
+                    dataType: 'json',
+					
+                    success: function(response){
+						$.each(response, function(index, value) {
+							 selOpts += "<option value='"+value.city+"'>"+value.city+"</option>";
+						});
+						$('#grd_city').append(selOpts);
+
+		                
+                   }
+               });
+
+   }	
+</script>

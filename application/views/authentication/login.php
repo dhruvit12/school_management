@@ -37,7 +37,7 @@
                                 <h2><?php echo translate('welcome_to');?></h2>
                             </div>
                             <div class="center img-hol-p">
-                                <img src="<?php echo base_url('uploads/app_image/logo.png');?>" height="60" alt="RamomCoder School">
+                                <img src="<?php echo base_url('uploads/app_image/logo.png');?>" height="45" alt="RamomCoder School">
                             </div>
                             <div class="address">
                                 <p><?php echo $global_config['address'];?></p>
@@ -102,6 +102,7 @@
                                         <i class="fas fa-sign-in-alt"></i> <?php echo translate('login');?>
                                     </button>
                                 </div>
+                                
                                 <div class="sign-footer">
                                     <p><?php echo $global_config['footer_text'];?></p>
                                 </div>

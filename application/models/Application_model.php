@@ -45,6 +45,7 @@ class Application_model extends CI_Model
 
     public function getUserNameByRoleID($roleID, $userID = '')
     {
+    //   echo "<pre>";print_r($roleID);exit;
         if ($roleID == 6) {
             $sql = "SELECT name,email,photo,branch_id FROM parent WHERE id = " . $this->db->escape($userID);
             return $this->db->query($sql)->row_array();

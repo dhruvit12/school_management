@@ -96,7 +96,7 @@
 											<tr>
 												<td width="80"><?=translate('roll')?></td>
 												<td width="8">:</td>
-												<td><?php echo html_escape($row->roll)?></td>
+												<td><?php echo html_escape($row->roll_no)?></td>
 											</tr>
 											<tr>
 												<td width="80"><?=translate('section')?></td>
@@ -104,19 +104,19 @@
 												<td><?php echo get_type_name_by_id('section', $row->section_id);?></td>
 											</tr>
 											<tr>
-												<td width="80"><?=translate('blood_group')?></td>
+												<td width="80"><?=translate('Mobile_no')?></td>
 												<td width="8">:</td>
 												<td>
-													<?=empty($row->blood_group) ? 'N/A' : $row->blood_group;?>
+													<?=empty($row->mobileno) ? 'N/A' : $row->mobileno;?>
 												</td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 								<hr>
-								<div class="qr-code">
+								<!-- <div class="qr-code">
 									<img src="<?php echo base_url('student/create_qrcode/' . "Reg_ID:" . $row->register_no);?>"/>
-								</div>
+								</div> -->
 							</div>
 						</div>
 					</div>

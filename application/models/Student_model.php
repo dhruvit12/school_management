@@ -21,11 +21,14 @@ class Student_model extends MY_Model
             'qualification' => $data['qualification'],
             'remarks' => $data['previous_remarks'],
         );
+        // echo "<pre>";print_r($data);exit;
         $inser_data1 = array(
             'register_no' => $data['register_no'],
+            'roll_no' => $data['roll'],
             'admission_date' => date("Y-m-d", strtotime($data['admission_date'])),
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
+            'sur_name' => $data['sur_name'],
             'gender' => $data['gender'],
             'birthday' => date("Y-m-d", strtotime($data['birthday'])),
             'religion' => $data['religion'],
@@ -201,7 +204,7 @@ class Student_model extends MY_Model
 
     public function getStudentList($classID = '', $sectionID = '', $branchID = '', $deactivate = false)
     {
-        $this->db->select('e.*,s.photo, CONCAT(s.first_name, " ", s.last_name) as fullname,s.register_no,s.parent_id,s.email,s.blood_group,s.birthday,l.active,c.name as class_name,se.name as section_name');
+        $this->db->select('e.*,s.photo, CONCAT(s.first_name, " ", s.last_name) as fullname,s.register_no,s.roll_no,s.parent_id,s.email,s.mobileno,s.birthday,l.active,c.name as class_name,se.name as section_name');
         $this->db->from('enroll as e');
         $this->db->join('student as s', 'e.student_id = s.id', 'inner');
         $this->db->join('login_credential as l', 'l.user_id = s.id and l.role = 7', 'inner');
@@ -281,5 +284,39 @@ class Student_model extends MY_Model
         }
 
         return ($prefix . $maxNum);
+    }
+    public function rollNumber()
+    {
+        $result = $this->db->select("max(id) as id")->get('student')->row_array();
+        $id = $result["id"];
+        if (!empty($id)) {
+            $maxNum = str_pad($id + 1, 1, '0', STR_PAD_LEFT);
+        } else {
+            $maxNum = '101';
+        }
+
+        return $maxNum;
+    }
+    public function getreligion()
+    {
+        $data=$this->db->get('religion')->result();
+        return $data;
+    }
+    public function getmother_tongue()
+    {
+        $data=$this->db->get('language')->result();
+        return $data;
+    }
+    public function getstates()
+    {
+        $data=$this->db->get('states')->result();
+        return $data;
+    }
+    public function get_city($id)
+    {
+        $this->db->where('state_id',$id);
+        $data=$this->db->get('cities')->result();
+        return $data;
+    
     }
 }

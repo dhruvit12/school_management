@@ -5,9 +5,9 @@ if (!defined('BASEPATH')) {
 
 class Student_model_api extends MY_Model
 {
-  public function student_get()
+  public function get_student()
   {
       $data = $this->db->get("student")->result();
-      this->response($data, REST_Controller::HTTP_OK);
+      $this->response($data, REST_Controller::HTTP_OK);
   }
 }

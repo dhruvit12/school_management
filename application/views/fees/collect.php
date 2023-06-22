@@ -14,8 +14,11 @@
 			<li>
 				<a href="#collect_fees" data-toggle="tab"><i class="fas fa-hand-holding-usd"></i> <?=translate('collect_fees')?></a>
 			</li>
+			
 <?php endif; ?>
+		
 		</ul>
+		
 		<div class="tab-content">
 			<div id="invoice" class="tab-pane <?=empty($this->session->flashdata('pay_tab')) ? 'active' : ''; ?>">
 				<div id="invoice_print">
@@ -351,7 +354,7 @@
 			
 			<!--add fees form-->
 			<?php if($invoice['status'] != 'total'): ?>
-				<div id="collect_fees" class="tab-pane">
+				<div id="collect_fees" class="tab-pane <?=empty($this->session->flashdata('pay_tab')) ? 'active' : ''; ?>">
 					<?php echo form_open('fees/fee_add', array('class' => 'form-horizontal frm-submit' )); ?>
 						<div class="form-group">
 							<label class="col-md-3 control-label"><?=translate('fees_type')?> <span class="required">*</span></label>

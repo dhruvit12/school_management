@@ -29,6 +29,7 @@
 							<?=translate('subject_name')?> <span class="required">*</span>
 						</label>
 						<div class="col-md-6">
+						<input type="hidden" class="form-control" name="subject_id" value="<?=$subject['id']?>" />
 							<input type="text" class="form-control" name="name" value="<?=$subject['name']?>" />
 							<span class="error"></span>
 						</div>
