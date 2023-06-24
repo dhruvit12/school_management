@@ -802,6 +802,7 @@
                         </ul>
                     </li>
                     <?php } ?>
+
                     <?php
                     if(get_permission('sendsmsmail', 'is_add') ||
                     get_permission('sendsmsmail_template', 'is_view') ||
@@ -851,7 +852,7 @@
                     <!-- student accounting -->
                     <li class="nav-parent <?php if ($main_menu == 'fees') echo 'nav-expanded nav-active';?>">
                         <a>
-                            <i class="icons icon-calculator"></i><span><?=translate('student_accounting')?></span>
+                            <i class="icons icon-calculator"></i><span><?=translate('Fees_Section')?></span>
                         </a>
                         <ul class="nav nav-children" id="myMenu">
                             <?php if(get_permission('fees_type', 'is_view')) { ?>
@@ -969,7 +970,8 @@
                         <ul class="nav nav-children" id="myMenu">
                         <?php  if(get_permission('fees_reports', 'is_view')){ ?>
                             <li class="nav-parent <?php if ($main_menu == 'fees_repots') echo 'nav-expanded nav-active'; ?>">
-                                <a><i class="fas fa-print"></i><span><?php echo translate('fees_reports'); ?></span></a>
+                            <a  href="<?=base_url('fees/student_report')?>" ><i class="fas fa-print"></i><span><?php echo translate('Student_report'); ?></span></a>
+                            <a ><i class="fas fa-print"></i><span><?php echo translate('fees_reports'); ?></span></a>
                                 <ul class="nav nav-children">
                                     <li class="<?php if ($sub_page == 'fees/student_fees_report') echo 'nav-active';?>">
                                         <a href="<?=base_url('fees/student_fees_report')?>"><?=translate('fees_report')?></a>

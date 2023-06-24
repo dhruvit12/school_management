@@ -73,6 +73,27 @@ class App_lib
         $query = $this->CI->db->get();
         return $query->$method();
     }
+    function getTable2($table,$table2, $where = "", $single = FALSE)
+    {
+        if ($where != NULL) {
+            $this->CI->db->where($where);
+        }
+        if (!is_superadmin_loggedin()) {
+            $this->CI->db->where("branch_id", get_loggedin_branch_id());
+        }
+        if ($single == TRUE) {
+            $method = "row_array";
+        } else {
+            $this->CI->db->order_by("id", "asc");
+            $method = "result_array";
+        }
+        $this->CI->db->select("t.*,b.name as branch_name,t2.total_fees,t2.amount,t2.due_date,t2.amount,t2.installment");
+        $this->CI->db->from("$table as t");
+        $this->CI->db->join("branch as b", "b.id = t.branch_id", "left");
+        $this->CI->db->join("$table2 as t2", "t2.fee_groups_id = t.id", "left");
+        $query = $this->CI->db->get();
+        return $query->$method();
+    }
 
     public function check_branch_restrictions($table, $id = '') {
         if (empty($id)) {

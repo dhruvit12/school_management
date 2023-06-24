@@ -397,6 +397,7 @@ class Userrole extends User_Controller
         $stu = $this->userrole_model->getStudentDetails();
         $this->data['config'] = $this->get_payment_config();
         $this->data['invoice'] = $this->fees_model->getInvoiceStatus($stu['student_id']);
+        // echo "<pre>";print_r($this->data['invoice']);exit;
         $this->data['basic'] = $this->fees_model->getInvoiceBasic($stu['student_id']);
         $this->data['title'] = translate('fees_history');
         $this->data['main_menu'] = 'fees';

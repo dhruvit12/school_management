@@ -200,6 +200,29 @@ class Fees_model extends MY_Model
         }
         return $result;
     }
+    public function getInvoiceListsecond($student_name,$branch_id)
+    {
+        $this->db->select('e.student_id,e.roll,s.first_name,s.last_name,s.register_no,s.mobileno,c.name as class_name,se.name as section_name');
+        $this->db->from('fee_allocation as fa');
+        $this->db->join('enroll as e', 'e.student_id = fa.student_id', 'inner');
+        $this->db->join('student as s', 's.id = e.student_id', 'left');
+        $this->db->join('class as c', 'c.id = e.class_id', 'left');
+        $this->db->join('section as se', 'se.id = e.section_id', 'left');
+        $this->db->where('fa.branch_id', $branch_id);
+        $this->db->where('fa.session_id', get_session_id());
+        $this->db->group_by('fa.student_id');
+        $this->db->like('s.first_name', $student_name); 
+        $this->db->like('s.last_name', $student_name);        
+        $this->db->like('s.sur_name', $student_name);        
+        $this->db->like('s.mobileno', $student_name);        
+        $this->db->order_by('e.id', 'asc');
+        $result = $this->db->get()->result_array();
+        foreach ($result as $key => $value) {
+            $result[$key]['feegroup'] = $this->getfeeGroup($value['student_id']);
+        }
+        return $result;
+        
+    }
 
     public function getDueInvoiceList($class_id, $section_id, $feegroup_id, $fee_feetype_id)
     {
@@ -441,6 +464,7 @@ class Fees_model extends MY_Model
             $this->db->insert('voucher_head', $arrayHead);
             $voucher_headID = $this->db->insert_id();
         }
+
         // query system transactions / insert
         $arrayTransactions =array(
             'account_id'        => $accountID,
@@ -471,5 +495,34 @@ class Fees_model extends MY_Model
 
         $this->db->where('id', $accountID);
         $this->db->update('accounts', array('balance' => $bal));
+    }
+    public function getStudentreport($classID='', $sectionID, $studentID, $branchID)
+    {
+        $this->db->select('*');
+        $this->db->from('student'); 
+        $this->db->join('enroll', 'enroll.student_id=student.id', 'left');
+        $this->db->join('class', 'class.id = enroll.class_id', 'left');
+        $this->db->join('branch', 'branch.id = enroll.branch_id', 'left');
+        $this->db->where('enroll.branch_id', $branchID);
+        if (!empty($classID)){
+            $this->db->where('enroll.class_id', $classID);
+        }
+        if (!empty($SectionID)){
+            $this->db->where('enroll.section_id', $SectionID);
+        }
+        if (!empty($studentID)){
+            $this->db->where('enroll.student_id', $studentID);
+        }
+       
+        $query = $this->db->get();
+        if($query->num_rows() != 0)
+        {
+             return $query->result_array();
+        //   echo "<pre>";print_r($this->db->last_query());exit;
+            }
+        else
+        {
+            return false;
+        } 
     }
 }

@@ -77,18 +77,18 @@ class Student extends Admin_Controller
         $branchID = $this->application_model->get_branch_id();
         if (isset($_POST['save'])) {
             $this->student_validation();
-            if (!isset($_POST['guardian_chk'])) {
-                $this->form_validation->set_rules('grd_name', translate('name'), 'trim|required');
-                $this->form_validation->set_rules('grd_relation', translate('relation'), 'trim|required');
-                $this->form_validation->set_rules('grd_occupation', translate('occupation'), 'trim|required');
-                $this->form_validation->set_rules('grd_mobileno', translate('mobile_no'), 'trim|required');
-                $this->form_validation->set_rules('grd_email', translate('email'), 'trim|required|callback_get_valid_guardian_email');
-                $this->form_validation->set_rules('grd_password', translate('password'), 'trim|required');
-                $this->form_validation->set_rules('grd_retype_password', translate('retype_password'), 'trim|required|matches[grd_password]');
-            } else {
-                $this->form_validation->set_rules('parent_id', translate('guardian'), 'required');
-            }
-            if ($this->form_validation->run() == true) {
+            // if (!isset($_POST['guardian_chk'])) {
+                // $this->form_validation->set_rules('grd_name', translate('name'), 'trim|required');
+                // $this->form_validation->set_rules('grd_relation', translate('relation'), 'trim|required');
+                // $this->form_validation->set_rules('grd_occupation', translate('occupation'), 'trim|required');
+                // $this->form_validation->set_rules('grd_mobileno', translate('mobile_no'), 'trim|required');
+                // $this->form_validation->set_rules('grd_email', translate('email'), 'trim|required|callback_get_valid_guardian_email');
+                // $this->form_validation->set_rules('grd_password', translate('password'), 'trim|required');
+                // $this->form_validation->set_rules('grd_retype_password', translate('retype_password'), 'trim|required|matches[grd_password]');
+            // } else {
+            //     $this->form_validation->set_rules('parent_id', translate('guardian'), 'required');
+            // }
+            // if ($this->form_validation->run() == true) {
                 $post = $this->input->post();
                 // echo "<pre>";print_r($post);exit;
                 //save all student information in the database file
@@ -126,7 +126,7 @@ class Student extends Admin_Controller
                 set_alert('success', translate('information_has_been_saved_successfully'));
                 redirect(base_url('student/add'));
             }
-        }
+        // }
         $this->data['branch_id'] = $branchID;
         $this->data['sub_page'] = 'student/add';
         $this->data['main_menu'] = 'admission';

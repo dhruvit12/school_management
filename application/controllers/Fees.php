@@ -121,26 +121,13 @@ class Fees extends Admin_Controller
             access_denied();
         }
         if ($_POST) {
+            
             if (!get_permission('fees_group', 'is_add')) {
                 ajax_access_denied();
             }
             if (is_superadmin_loggedin()) {
                 $this->form_validation->set_rules('branch_id', translate('branch'), 'required');
             }
-            $this->form_validation->set_rules('name', translate('group_name'), 'trim|required');
-            $elems = $this->input->post('elem');
-            $sel = 0;
-            if (count($elems)) {
-                foreach ($elems as $key => $value) {
-                    if (isset($value['fees_type_id'])) {
-                        $sel++;
-                        $this->form_validation->set_rules('elem[' . $key . '][due_date]', translate('due_date'), 'trim|required');
-                        $this->form_validation->set_rules('elem[' . $key . '][amount]', translate('amount'), 'trim|required|greater_than[0]');
-                    }
-                }
-            }
-            if ($this->form_validation->run() !== false) {
-                if ($sel != 0) {
                     $arrayGroup = array(
                         'name' => $this->input->post('name'),
                         'description' => $this->input->post('description'),
@@ -148,37 +135,30 @@ class Fees extends Admin_Controller
                         'branch_id' => $this->application_model->get_branch_id(),
                     );
                     $this->db->insert('fee_groups', $arrayGroup);
-                    $groupID = $this->db->insert_id();
-                    foreach ($elems as $key => $row) {
-                        if (isset($row['fees_type_id'])) {
-                            $arrayData = array(
+                     $groupID = $this->db->insert_id();
+                    //  echo "<pre>";print_r($groupID);exit;
+                       $arrayData = array(
                                 'fee_groups_id' => $groupID,
-                                'fee_type_id' => $row['fees_type_id'],
-                                'due_date' => date("Y-m-d", strtotime($row['due_date'])),
-                                'amount' => $row['amount'],
+                                // 'fee_type_id' => $_POST['fees_type_id'],
+                                'installment'=>$_POST['installment'],
+                                'total_fees'=>$_POST['total_fees'],
+                                'due_date' => implode(',',$_POST['due_date']),
+                                'amount' => implode(',',$_POST['amount']),
                             );
-                            $this->db->where(array('fee_groups_id' => $groupID, 'fee_type_id' => $row['fees_type_id']));
+                            // echo "<pre>";print_r($arrayData);exit;
+                            $this->db->where(array('fee_groups_id' => $groupID));
                             $query = $this->db->get("fee_groups_details");
                             if ($query->num_rows() == 0) {
                                 $this->db->insert('fee_groups_details', $arrayData);
                             }
                         }
-                    }
                     set_alert('success', translate('information_has_been_saved_successfully'));
-                } else {
-                    set_alert('error', 'At least one type has to be selected.');
-                }
-                $url = base_url('fees/group');
-                $array = array('status' => 'success', 'url' => $url);
-            } else {
-                $error = $this->form_validation->error_array();
-                $array = array('status' => 'fail', 'error' => $error);
-            }
-            echo json_encode($array);
-            exit();
-        }
+                // $url = base_url('fees/group');
+                // $array = array('status' => 'success', 'url' => $url);
+            
+        
         $this->data['branch_id'] = $branch_id;
-        $this->data['categorylist'] = $this->app_lib->getTable('fee_groups', array('t.session_id' => get_session_id()));
+        $this->data['categorylist'] = $this->app_lib->getTable2('fee_groups','fee_groups_details', array('t.session_id' => get_session_id()));
         $this->data['title'] = translate('fees_group');
         $this->data['sub_page'] = 'fees/group';
         $this->data['main_menu'] = 'fees';
@@ -192,19 +172,19 @@ class Fees extends Admin_Controller
         }
         if ($_POST) {
             $this->form_validation->set_rules('name', translate('group_name'), 'trim|required');
-            $elems = $this->input->post('elem');
-            $sel = array();
-            if (count($elems)) {
-                foreach ($elems as $key => $value) {
-                    if (isset($value['fees_type_id'])) {
-                        $sel[] = $value['fees_type_id'];
-                        $this->form_validation->set_rules('elem[' . $key . '][due_date]', translate('due_date'), 'trim|required');
-                        $this->form_validation->set_rules('elem[' . $key . '][amount]', translate('amount'), 'trim|required|greater_than[0]');
-                    }
-                }
-            }
-            if ($this->form_validation->run() !== false) {
-                if (count($sel)) {
+            // $elems = $this->input->post('elem');
+            // $sel = array();
+            // if (count($elems)) {
+            //     foreach ($elems as $key => $value) {
+            //         if (isset($value['fees_type_id'])) {
+            //             $sel[] = $value['fees_type_id'];
+            //             $this->form_validation->set_rules('elem[' . $key . '][due_date]', translate('due_date'), 'trim|required');
+            //             $this->form_validation->set_rules('elem[' . $key . '][amount]', translate('amount'), 'trim|required|greater_than[0]');
+            //         }
+            //     }
+            // }
+            // if ($this->form_validation->run() !== false) {
+                // if (count($sel)) {
                     $groupID = $this->input->post('group_id');
                     $arrayGroup = array(
                         'name' => $this->input->post('name'),
@@ -212,15 +192,17 @@ class Fees extends Admin_Controller
                     );
                     $this->db->where('id', $groupID);
                     $this->db->update('fee_groups', $arrayGroup);
-                    foreach ($elems as $key => $row) {
-                        if (isset($row['fees_type_id'])) {
+                    // foreach ($elems as $key => $row) {
+                        // if (isset($row['fees_type_id'])) {
                             $arrayData = array(
                                 'fee_groups_id' => $groupID,
-                                'fee_type_id' => $row['fees_type_id'],
-                                'due_date' => date("Y-m-d", strtotime($row['due_date'])),
-                                'amount' => $row['amount'],
+                                // 'fee_type_id' => $_POST['fees_type_id'],
+                                'installment'=>$_POST['installment'],
+                                'due_date' => implode(',',$_POST['due_date']),
+                                'amount' => implode(',',$_POST['amount']),
                             );
-                            $this->db->where(array('fee_groups_id' => $groupID, 'fee_type_id' => $row['fees_type_id']));
+                            // echo "<pre>";print_r($arrayData);exit;
+                            $this->db->where(array('fee_groups_id' => $groupID));
                             $query = $this->db->get("fee_groups_details");
                             if ($query->num_rows() == 0) {
                                 $this->db->insert('fee_groups_details', $arrayData);
@@ -228,8 +210,8 @@ class Fees extends Admin_Controller
                                 $this->db->where('id', $query->row()->id);
                                 $this->db->update('fee_groups_details', $arrayData);
                             }
-                        }
-                    }
+                    //     }
+                    // }
                     $this->db->where_not_in('fee_type_id', $sel);
                     $this->db->where('fee_groups_id', $groupID);
                     $this->db->delete('fee_groups_details');
@@ -237,16 +219,16 @@ class Fees extends Admin_Controller
                 } else {
                     set_alert('error', 'At least one type has to be selected.');
                 }
-                $url = base_url('fees/group');
-                $array = array('status' => 'success', 'url' => $url);
-            } else {
-                $error = $this->form_validation->error_array();
-                $array = array('status' => 'fail', 'error' => $error);
-            }
-            echo json_encode($array);
-            exit();
-        }
-        $this->data['group'] = $this->app_lib->getTable('fee_groups', array('t.id' => $id), true);
+                // $url = base_url('fees/group');
+                // $array = array('status' => 'success', 'url' => $url);
+        //     } else {
+        //         $error = $this->form_validation->error_array();
+        //         $array = array('status' => 'fail', 'error' => $error);
+        //     }
+        //     echo json_encode($array);
+        //     exit();
+        // }
+        $this->data['group'] = $this->app_lib->getTable2('fee_groups','fee_groups_details', array('t.id' => $id), true);
         $this->data['title'] = translate('fees_group');
         $this->data['sub_page'] = 'fees/group_edit';
         $this->data['main_menu'] = 'fees';
@@ -443,8 +425,16 @@ class Fees extends Admin_Controller
         if ($this->input->post('search')) {
             $this->data['class_id'] = $this->input->post('class_id');
             $this->data['section_id'] = $this->input->post('section_id');
+           
             $this->data['invoicelist'] = $this->fees_model->getInvoiceList($this->data['class_id'], $this->data['section_id'], $branchID);
         }
+        if(!empty($this->input->post('student_name'))){
+            $this->data['section_id'] = $this->input->post('student_name');
+            $this->data['invoicelist'] = $this->fees_model->getInvoiceListsecond($this->data['student_name'], $branchID);
+    
+        }
+        
+        // echo $This->input->post('student_name');exit;
         $this->data['branch_id'] = $branchID;
         $this->data['title'] = translate('payments_history');
         $this->data['sub_page'] = 'fees/invoice_list';
@@ -856,6 +846,37 @@ class Fees extends Admin_Controller
         $this->data['title'] = translate('fees_fine_reports');
         $this->data['sub_page'] = 'fees/fine_report';
         $this->data['main_menu'] = 'fees_repots';
+        $this->data['headerelements']   = array(
+            'css' => array(
+                'vendor/daterangepicker/daterangepicker.css',
+            ),
+            'js' => array(
+                'vendor/moment/moment.js',
+                'vendor/daterangepicker/daterangepicker.js',
+            ),
+        );
+        $this->load->view('layout/index', $this->data);
+    }
+    public function student_report()
+    {
+        if (!get_permission('fees_reports', 'is_view')) {
+            access_denied();
+        }
+        $branchID = $this->application_model->get_branch_id();
+        if ($this->input->post('search')) {
+            $classID = $this->input->post('class_id');
+            $sectionID  = $this->input->post('section_id');
+            $studentID  = $this->input->post('student_id');
+            $this->data['studentreport'] = $this->fees_model->getStudentreport($classID, $sectionID, $studentID,  $branchID);
+            // echo "<pre>;";print_r($this->data['studentreport']);exit;
+        
+        }
+        // $this->data['studentreport'] = $this->fees_model->getStudentreport($branchID);
+        // echo "<pre>";print_r($this->data['studentreport']);exit;
+        $this->data['sub_page'] = 'fees/student_report';
+        $this->data['branch_id'] = $branchID;
+
+        $this->data['main_menu'] = 'student_report';
         $this->data['headerelements']   = array(
             'css' => array(
                 'vendor/daterangepicker/daterangepicker.css',

@@ -5,6 +5,6 @@ $route['default_controller'] = 'install';
 $route['404_override'] = 'errors';
 $route['translate_uri_dashes'] = True;
 
-$route['api/student'] = 'api/StudentController/student';
+$route['api/login'] = 'StudentController/login';
 
 ?>

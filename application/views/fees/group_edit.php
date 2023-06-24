@@ -21,6 +21,27 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label class="col-md-3 control-label"><?=translate('Enter Fees Amount')?> <span class="required">*</span></label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" name="total_fees" id="total_fees" value="<?=$group['total_fees']?>"/>
+								<span class="error"></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label"><?=translate('Installment')?> <span class="required">*</span></label>
+							<div class="col-md-6">
+                               <select name="installment" id="installment" class="form-control" onchange="myFunction()">
+							      
+								  <option value="12"<?php if($group['installment'] == '12'){ echo "selected";}?>>Monthly</option>
+								  <option value="4" <?php if($group['installment'] == '4'){ echo "selected";}?>>quarly</option>
+								  <option value="1" <?php if($group['installment'] == '1'){ echo "selected";}?>>yearly</option>
+								  <option value="2" <?php if($group['installment'] == '2'){ echo "selected";}?>>Halfly</option>
+							   
+								</select>
+    						</div>
+						</div>
+						
+						<div class="form-group">
 							<label class="col-md-3 control-label"><?php echo translate('description'); ?></label>
 							<div class="col-md-6 mb-md">
 								<textarea class="form-control" id="description" name="description" placeholder="" rows="3" ><?=$group['description']?></textarea>
@@ -30,52 +51,28 @@
 					<div class="table-responsive">
 						<table class="table table-bordered table-hover" id="tableID">
 							<thead>
-								<th>
-									<div class="checkbox-replace">
-										<label class="i-checks">
-											<input type="checkbox" name="select_chkbox" id="selectAllchkbox"><i></i>
-										</label>
-									</div>
-								</th>
-								<th><?php echo translate('fees_type'); ?> <span class="required">*</span></th>
-								<th><?php echo translate('due_date'); ?> <span class="required">*</span></th>
-								<th><?php echo translate('amount'); ?> <span class="required">*</span></th>
-							</thead>
+								<th><div id="header1"></th>
+								<th><div id="header2"></th>
+								<th><div id="header3"></th>
+					        </thead>
 							<tbody>
-								<?php
-								$this->db->where('branch_id', $group['branch_id']);
-								$result = $this->db->get('fees_type')->result_array();
-								foreach ($result as $key => $row) {
-									$this->db->where('fee_groups_id', $group['id']);
-									$this->db->where('fee_type_id', $row['id']);
-									$details = $this->db->get('fee_groups_details')->row_array();
-								?>
 								<tr>
 									<td class="checked-area" width="60">
 										<div class="checkbox-replace">
-											<label class="i-checks">
-												<input type="checkbox" name="elem[<?=$key?>][fees_type_id]" <?=($row['id'] == $details['fee_type_id'] ? 'checked' : '')?> value="<?=$row['id']?>"> <i></i>
-											</label>
+											   <div id="div1">
 										</div>
-									</td>
-									<td class="min-w-lg">
-										<div class="form-group"><?php echo $row['name']; ?></div>
 									</td>
 									<td class="min-w-sm">
 										<div class="form-group">
-											<input type="text" class="form-control" name="elem[<?php echo $key; ?>][due_date]" value="<?=$details['due_date']?>" data-plugin-datepicker
-											data-plugin-options='{"startView": 1}' autocomplete="off" />
-											<span class="error"></span>
+											<div id="div2">
 										</div>
 									</td>
 									<td class="min-w-lg">
 										<div class="form-group">
-											<input type="text" name="elem[<?php echo $key; ?>][amount]" class="form-control" autocomplete="off" value="<?=$details['amount']?>" />
-											<span class="error"></span>
-										</div>
+									    	<div id="div3">
+									    </div>
 									</td>
 								</tr>
-								<?php } ?>
 							</tbody>
 						</table>
 					</div>
@@ -93,3 +90,46 @@
 		</div>
 	</div>
 </section>
+<?php $array = $group['due_date'];?>
+<script>
+	$(document).ready(function(){
+		myFunction();
+});
+</script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#branch_id').on('change', function(){
+			var branchID = $(this).val();
+			window.location.href = base_url + 'fees/group/' + branchID;
+		});
+	});
+	
+</script>
+<script>
+function myFunction() {
+		var x=document.getElementById("installment").value;
+		var total_fees=document.getElementById("total_fees").value;
+		var answer = total_fees / x;
+
+		if(x!=0){
+                 var installment1='';
+                 var installment2='';
+                 var installment3='';
+				 for (let i = 1; i <= x; i++) {
+				installment1 += '<input type="text" name="no[]" value='+i+' class="form-control"> <br>';
+				installment2 +='<input type="date" class="form-control" name="due_date[]"  value='+parseInt(answer)+'/><br>'; 
+				installment3 +='<input type="text" class="form-control" name="amount[]" value='+parseInt(answer)+'><br>'; 
+      			
+			}
+			document.getElementById("header1").innerHTML = '<th>fees_type</th>';
+			document.getElementById("header2").innerHTML = '<th>due_date </th>';
+			document.getElementById("header3").innerHTML = '<th>amount</th>';
+
+
+				  document.getElementById("div1").innerHTML = installment1;
+				  document.getElementById("div2").innerHTML = installment2;
+				  document.getElementById("div3").innerHTML = installment3;
+
+			}
+}
+</script>

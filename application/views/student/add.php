@@ -352,14 +352,14 @@
 					<div class="row">
 						<div class="col-md-6 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('name')?> <span class="required">*</span></label>
+								<label class="control-label"><?=translate('name')?> </label>
 								<input class="form-control" name="grd_name" type="text" value="<?=set_value('grd_name')?>">
 							</div>
 							<span class="error"><?=form_error('grd_name')?></span>
 						</div>
 						<div class="col-md-6 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('relation')?> <span class="required">*</span></label>
+								<label class="control-label"><?=translate('relation')?> </label>
 								<input class="form-control" name="grd_relation" value="<?=set_value('grd_relation')?>" type="text">
 								<span class="error"><?=form_error('grd_relation')?></span>
 							</div>
@@ -384,7 +384,7 @@
 					<div class="row">
 						<div class="col-md-4 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('occupation')?> <span class="required">*</span></label>
+								<label class="control-label"><?=translate('occupation')?> </label>
 								<input class="form-control" name="grd_occupation" value="<?=set_value('grd_occupation')?>" type="text">
 								<span class="error"><?=form_error('grd_occupation')?></span>
 							</div>
@@ -425,7 +425,7 @@
 						</div>
 						<div class="col-md-4 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('mobile_no')?> <span class="required">*</span></label>
+								<label class="control-label"><?=translate('mobile_no')?> </label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fas fa-phone-volume"></i></span>
 									<input class="form-control" name="grd_mobileno" type="text" value="<?=set_value('grd_mobileno')?>">
@@ -446,7 +446,7 @@
 					<div class="row mb-lg">
 						<div class="col-md-6 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('email')?> <span class="required">*</span></label>
+								<label class="control-label"><?=translate('email')?> </label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="far fa-envelope-open"></i></span>
 									<input type="email" class="form-control" name="grd_email" id="grd_email" value="<?=set_value('grd_email')?>" />
@@ -456,7 +456,7 @@
 						</div>
 						<div class="col-md-3 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('password')?> <span class="required">*</span></label>
+								<label class="control-label"><?=translate('password')?> </label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fas fa-unlock-alt"></i></span>
 									<input type="password" class="form-control" name="grd_password" value="<?=set_value('grd_password')?>" />
@@ -466,7 +466,7 @@
 						</div>
 						<div class="col-md-3 mb-sm">
 							<div class="form-group">
-								<label class="control-label"><?=translate('retype_password')?> <span class="required">*</span></label>
+								<label class="control-label"><?=translate('retype_password')?> </label>
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fas fa-unlock-alt"></i></span>
 									<input type="password" class="form-control" name="grd_retype_password" value="<?=set_value('grd_retype_password')?>" />

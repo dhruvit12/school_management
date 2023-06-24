@@ -5,7 +5,7 @@
 			<header class="panel-heading">
 				<h4 class="panel-title"><?=translate('select_ground')?></h4>
 			</header>
-			<?php echo form_open($this->uri->uri_string(), array('class' => 'validate'));?>
+			<?php echo form_open($this->uri->uri_string());?>
 			<div class="panel-body">
 				<div class="row mb-sm">
 				<?php if (is_superadmin_loggedin() ): ?>
@@ -26,7 +26,7 @@
 							<?php
 								$arrayClass = $this->app_lib->getClass($branch_id);
 								echo form_dropdown("class_id", $arrayClass, set_value('class_id'), "class='form-control' id='class_id' onchange='getSectionByClass(this.value,1)'
-								required data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
+								 data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
 							?>
 						</div>
 					</div>
@@ -35,9 +35,15 @@
 							<label class="control-label"><?=translate('section')?> <span class="required">*</span></label>
 							<?php
 								$arraySection = $this->app_lib->getSections(set_value('class_id'), true);
-								echo form_dropdown("section_id", $arraySection, set_value('section_id'), "class='form-control' id='section_id' required
+								echo form_dropdown("section_id", $arraySection, set_value('section_id'), "class='form-control' id='section_id' 
 								data-plugin-selectTwo data-width='100%' data-minimum-results-for-search='Infinity' ");
 							?>
+						</div>
+					</div>
+					<div class="col-md-<?php echo $widget; ?> mb-sm">
+						<div class="form-group">
+							<label class="control-label"><?=translate('Student Name and Contact no')?> <span class="required">*</span></label>
+							<input type="text" name="student_name" class="form-control">
 						</div>
 					</div>
 				</div>
